@@ -21,6 +21,7 @@
 		<None Remove="Assets\login-bg.jpg" />
 		<None Remove="Assets\login-left.jpg" />
 		<None Remove="Assets\logo.ico" />
+		<None Remove="Assets\MultiVerseKitLogo.png" />
 		<None Remove="Assets\verify.jpg" />
 	</ItemGroup>
 
@@ -93,6 +94,7 @@
 		<Resource Include="Assets\login-bg.jpg" />
 		<Resource Include="Assets\login-left.jpg" />
 		<Resource Include="Assets\logo.ico" />
+		<Resource Include="Assets\MultiVerseKitLogo.png" />
 		<Resource Include="Assets\verify.jpg" />
 	</ItemGroup>
 

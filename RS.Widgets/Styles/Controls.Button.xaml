@@ -44,6 +44,8 @@
         TargetType="{x:Type ButtonBase}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="Template" Value="{StaticResource RSApp.Templates.IconButton}" />
@@ -298,13 +300,6 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}">
-                        <Border.Background>
-                            <MultiBinding Converter="{StaticResource ColorBlendConverter}" ConverterParameter="#dddddd">
-                                <Binding Path="Background" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
-                                <Binding Path="(rs:ControlsHelper.BlendRatio)" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
-                            </MultiBinding>
-                        </Border.Background>
-
                         <Grid>
                             <ContentControl
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -319,10 +314,10 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="rs:ControlsHelper.BlendRatio" Value="0.15" />
+                <!--<Setter Property="Background" Value="{}" />-->
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="rs:ControlsHelper.BlendRatio" Value="0.35" />
+                <!--<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=(rs:ControlsHelper.mou)}" />-->
             </Trigger>
         </Style.Triggers>
     </Style>

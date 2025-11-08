@@ -16,16 +16,18 @@
     MinWidth="500"
     MinHeight="500"
     d:DataContext="{d:DesignInstance Type=viewModel:HomeViewModel}"
+    d:DesignHeight="1000"
+    d:DesignWidth="1920"
     CornerRadius="5"
     Icon="/Assets/login-bg.jpg"
-    IsFitSystem="False"
+    IsFitSystem="True"
     IsMaxsizedFullScreen="{Binding ElementName=CkIsFullScreen, Path=IsChecked}"
     IsShowIcon="False"
     IsShowTitle="False"
+    IsShowWinBtnCommands="False"
     IsUseCornerRadius="False"
-    Left="150"
     ResizeMode="CanResizeWithGrip"
-    Top="50"
+    WinBtnCommandMargin="0,0,10,0"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <rs:RSWindow.Resources>
@@ -37,18 +39,212 @@
             <SolidColorBrush x:Key="RSApp.SolidColorBrush.EBEBEB">#EBEBEB</SolidColorBrush>
         </ResourceDictionary>
     </rs:RSWindow.Resources>
-    <rs:RSWindow.MidCaptionContent>
-        <Grid Margin="5,0,5,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button rs:ControlsHelper.IconData="{StaticResource RSApp.Icons.Setting}" Style="{StaticResource RSApp.Styles.IconButtonStyle}" />
-            </StackPanel>
-        </Grid>
-    </rs:RSWindow.MidCaptionContent>
 
-    <Grid />
+    <Grid Background="#E6EDF5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Border
+            Grid.Row="0"
+            Padding="0,0,15,0"
+            WindowChrome.IsHitTestVisibleInChrome="True">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Image
+                        Width="50"
+                        Height="50"
+                        Source="/Assets/MultiVerseKitLogo.png"
+                        Stretch="Fill" />
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Black"
+                        Foreground="#0A72EB"
+                        Text="MultiVerseKit" />
+                </StackPanel>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border
+                        Height="36"
+                        Background="#D1DAE4"
+                        CornerRadius="6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Path
+                                Grid.Column="0"
+                                Width="15"
+                                Height="15"
+                                Margin="10,0,5,0"
+                                Data="{StaticResource RSApp.Icons.Search}"
+                                Fill="#515151"
+                                Stretch="Fill" />
+                            <TextBox
+                                Grid.Column="1"
+                                Width="250"
+                                Margin="0"
+                                rs:TextBoxHelper.Watermark="搜索"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                Text="{Binding SearchContent}" />
+                        </Grid>
+
+                    </Border>
+
+
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <ToggleButton x:Name="PART_TogBtnUserInfo">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    <Setter Property="rs:ControlsHelper.CornerRadius" Value="5" />
+                                    <Setter Property="Padding" Value="5,3,5,3" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                <Border
+                                                    x:Name="PART_Border"
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}">
+                                                    <ContentPresenter />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Cursor" Value="Hand" />
+                                                        <Setter Property="Background" Value="#DBE3ED" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="Background" Value="#D1DAE4" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ToggleButton.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <Border
+                                    Width="32"
+                                    Height="32"
+                                    CornerRadius="50">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="/Assets/login-left.jpg" />
+                                    </Border.Background>
+                                </Border>
+
+                                <TextBlock
+                                    Margin="3,0,0,0"
+                                    Foreground="#707070"
+                                    Text="">
+                                    <Run FontSize="14" Text="行云游者" />
+                                    <Run FontSize="12" Text="•" />
+                                    <Run FontSize="12" Text="1845960295@qq.com" />
+                                </TextBlock>
+                            </StackPanel>
+                        </ToggleButton>
+
+                        <Button
+                            rs:ControlsHelper.IconData="{StaticResource RSApp.Icons.Setting}"
+                            rs:ControlsHelper.IconHeight="20"
+                            rs:ControlsHelper.IconWidth="20"
+                            Content="设置"
+                            FontSize="14"
+                            Foreground="#707070"
+                            Style="{StaticResource RSApp.Styles.IconButtonStyle}" />
+                    </StackPanel>
+
+                    <Popup
+                        x:Name="PART_UserPopup"
+                        AllowsTransparency="True"
+                        Focusable="False"
+                        HorizontalOffset="-3"
+                        IsOpen="{Binding ElementName=PART_TogBtnUserInfo, Path=IsChecked, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Placement="Bottom"
+                        PlacementTarget="{Binding ElementName=PART_TogBtnUserInfo}"
+                        PopupAnimation="None"
+                        SnapsToDevicePixels="True"
+                        StaysOpen="False"
+                        VerticalOffset="-3">
+                        <Border Margin="15" Effect="{StaticResource RSApp.Styles.DefaultEffect}">
+                            <Border
+                                x:Name="DropDownBorder"
+                                MinWidth="{Binding ElementName=PART_TogBtnUserInfo, Path=ActualWidth}"
+                                MinHeight="200"
+                                Margin="5"
+                                Background="#FFF"
+                                CornerRadius="5">
+                                <Border.Clip>
+                                    <MultiBinding Converter="{StaticResource ClipConverter}">
+                                        <Binding ElementName="DropDownBorder" Path="CornerRadius" />
+                                        <Binding ElementName="DropDownBorder" Path="ActualWidth" />
+                                        <Binding ElementName="DropDownBorder" Path="ActualHeight" />
+                                        <Binding ElementName="DropDownBorder" Path="BorderThickness" />
+                                    </MultiBinding>
+                                </Border.Clip>
+                                <Grid />
+                            </Border>
+                        </Border>
+
+                    </Popup>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" />
+            <Border
+                Grid.Column="1"
+                Margin="0,0,15,0"
+                Background="#fff"
+                CornerRadius="10,10,0,0">
+                <ScrollViewer>
+                    <!--<ContentControl Height="5000" Content="{Binding}" />-->
+                    <!--<rs:RSDateTimePicker />-->
+                    <rs:RSPicker
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding TestList}"
+                        SearchPropertyName="Name"
+                        SelectedItem="{Binding TestSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <rs:RSPicker.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="15,5,15,5">
+                                    <TextBlock FontSize="12" Text="{Binding Item.Name}" />
+                                </Border>
+                            </DataTemplate>
+                        </rs:RSPicker.ItemTemplate>
+                    </rs:RSPicker>
+
+
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
 </rs:RSWindow>

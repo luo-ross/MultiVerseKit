@@ -23,41 +23,42 @@
         <Border
             x:Name="PART_Border"
             Padding="{TemplateBinding Padding}"
+            Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}">
-            <Border.Background>
-                <MultiBinding Converter="{StaticResource ColorBlendConverter}">
-                    <Binding Path="Background" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
-                    <Binding Path="(rs:ControlsHelper.BlendRatio)" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
-                </MultiBinding>
-            </Border.Background>
-
-            <Path
-                x:Name="PART_Path"
-                Width="{TemplateBinding rs:ControlsHelper.IconWidth}"
-                Height="{TemplateBinding rs:ControlsHelper.IconHeight}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Data="{TemplateBinding rs:ControlsHelper.IconData}"
-                Fill="{TemplateBinding Foreground}"
-                IsEnabled="{TemplateBinding IsEnabled}"
-                RenderTransformOrigin="0.5,0.5"
-                Stretch="Uniform">
-                <Path.RenderTransform>
-                    <RotateTransform Angle="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(rs:ControlsHelper.IconRotateAngle)}" />
-                </Path.RenderTransform>
-            </Path>
-
+            <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Path
+                    x:Name="PART_Path"
+                    Width="{TemplateBinding rs:ControlsHelper.IconWidth}"
+                    Height="{TemplateBinding rs:ControlsHelper.IconHeight}"
+                    Data="{TemplateBinding rs:ControlsHelper.IconData}"
+                    Fill="{TemplateBinding Foreground}"
+                    IsEnabled="{TemplateBinding IsEnabled}"
+                    RenderTransformOrigin="0.5,0.5"
+                    Stretch="Uniform">
+                    <Path.RenderTransform>
+                        <RotateTransform Angle="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(rs:ControlsHelper.IconRotateAngle)}" />
+                    </Path.RenderTransform>
+                </Path>
+                <ContentPresenter
+                    Grid.Column="1"
+                    TextBlock.FontSize="{TemplateBinding FontSize}"
+                    TextBlock.Foreground="{TemplateBinding Foreground}" />
+            </Grid>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="rs:ControlsHelper.BlendRatio" Value="0.35" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="rs:ControlsHelper.BlendRatio" Value="0.15" />
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
             </Trigger>
+            <Trigger Property="IsPressed" Value="True" />
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="#eee" />
                 <Setter TargetName="PART_Path" Property="Fill" Value="#949494" />

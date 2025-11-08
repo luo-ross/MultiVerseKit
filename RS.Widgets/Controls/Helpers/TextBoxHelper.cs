@@ -17,17 +17,47 @@ namespace RS.Widgets.Controls
         #region 水印设置
 
         public static readonly DependencyProperty WatermarkProperty =
-  DependencyProperty.RegisterAttached("Watermark", typeof(string), typeof(TextBoxHelper), new PropertyMetadata("请输入内容"));
+  DependencyProperty.RegisterAttached("Watermark", typeof(object), typeof(TextBoxHelper), new PropertyMetadata("请输入内容"));
         
-        public static string GetWatermark(DependencyObject obj)
+        public static object GetWatermark(DependencyObject obj)
         {
-            return (string)obj.GetValue(WatermarkProperty);
+            return (object)obj.GetValue(WatermarkProperty);
         }
 
-        public static void SetWatermark(DependencyObject obj, string value)
+        public static void SetWatermark(DependencyObject obj, object value)
         {
             obj.SetValue(WatermarkProperty, value);
         }
+
+
+        public static readonly DependencyProperty RightContentProperty =
+  DependencyProperty.RegisterAttached("RightContent", typeof(object), typeof(TextBoxHelper), new PropertyMetadata(null));
+
+        public static object GetRightContent(DependencyObject obj)
+        {
+            return (object)obj.GetValue(RightContentProperty);
+        }
+
+        public static void SetRightContent(DependencyObject obj, object value)
+        {
+            obj.SetValue(RightContentProperty, value);
+        }
+
+
+
+        public static readonly DependencyProperty WatermarkForgroundProperty =
+            DependencyProperty.RegisterAttached("WatermarkForground", typeof(Brush), typeof(TextBoxHelper), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#949494"))));
+
+        public static Brush GetWatermarkForground(DependencyObject obj)
+        {
+            return (Brush)obj.GetValue(WatermarkForgroundProperty);
+        }
+
+        public static void SetWatermarkForground(DependencyObject obj, Brush value)
+        {
+            obj.SetValue(WatermarkForgroundProperty, value);
+        }
+
         #endregion
 
         #region 判断是否有文本

@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using NPOI.Util;
 using RS.Commons.Attributs;
-using RS.WPFClient.Client.Models;
 using RS.Widgets.Enums;
 using RS.Widgets.Interfaces;
 using RS.Widgets.Models;
+using RS.WPFClient.Client.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -39,7 +40,44 @@ namespace RS.WPFClient.Client.ViewModels
             PersonModelList = new ObservableCollection<PersonModel>();
             this.GenerateTestData(100000);
             this.ChangeSource(PersonModelList);
+
+
+            TestList = new ObservableCollection<PersonModel>();
+            for (int i = 0; i < 1000000; i++)
+            {
+                TestList.Add(new PersonModel()
+                {
+                    Name=$"Ross{i}"
+                });
+            }
+
         }
+
+
+
+        private ObservableCollection<PersonModel> testList;
+
+        public ObservableCollection<PersonModel> TestList
+        {
+            get { return testList; }
+            set
+            {
+                this.SetProperty(ref testList, value);
+            }
+        }
+
+
+        private PersonModel testSelected;
+
+        public PersonModel TestSelected
+        {
+            get { return testSelected; }
+            set
+            {
+                this.SetProperty(ref testSelected, value);
+            }
+        }
+
 
         public void GenerateTestData(int n)
         {

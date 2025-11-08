@@ -70,5 +70,10 @@ namespace RS.Commons.Extensions
             }
             return query.ToString();
         }
+
+        public static bool IsNullableType(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
     }
 }

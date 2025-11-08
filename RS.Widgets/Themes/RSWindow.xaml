@@ -98,6 +98,7 @@
                                         <StackPanel
                                             x:Name="PART_WinBtnCommands"
                                             Grid.Column="2"
+                                            Margin="{TemplateBinding WinBtnCommandMargin}"
                                             Orientation="Horizontal">
                                             <Button
                                                 x:Name="PART_Minimize"

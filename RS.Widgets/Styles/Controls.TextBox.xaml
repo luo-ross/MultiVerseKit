@@ -37,6 +37,7 @@
         <Setter Property="rs:TextBoxHelper.IsShowClearButton" Value="False" />
         <Setter Property="rs:ControlsHelper.DesForeground" Value="#6B7280" />
         <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="rs:TextBoxHelper.WatermarkForground" Value="#949494" />
         <Setter Property="Validation.ErrorTemplate" Value="{StaticResource RSApp.Templates.DefaultDataError}" />
         <Setter Property="ContextMenu">
             <Setter.Value>
@@ -78,17 +79,20 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock
+
+
+                                <ContentControl
                                     x:Name="PART_Watermark"
                                     Grid.Column="0"
                                     Padding="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Background="Transparent"
+                                    Content="{TemplateBinding rs:TextBoxHelper.Watermark}"
                                     FontSize="{TemplateBinding FontSize}"
-                                    Foreground="#949494"
-                                    Text="{TemplateBinding rs:TextBoxHelper.Watermark}"
+                                    Foreground="{TemplateBinding rs:TextBoxHelper.WatermarkForground}"
                                     Visibility="Collapsed" />
 
                                 <ScrollViewer
@@ -114,6 +118,14 @@
                                     Style="{StaticResource RSApp.Styles.IconButtonStyle}"
                                     ToolTip="清除输入框内容"
                                     Visibility="Collapsed" />
+
+                                <ContentControl
+                                    x:Name="PART_RightContent"
+                                    Grid.Column="2"
+                                    Background="Transparent"
+                                    Content="{TemplateBinding rs:TextBoxHelper.RightContent}"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding rs:TextBoxHelper.WatermarkForground}" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -158,6 +170,9 @@
                             <Setter TargetName="PART_Description" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
 
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=(rs:TextBoxHelper.RightContent)}" Value="{x:Null}">
+                            <Setter TargetName="PART_RightContent" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

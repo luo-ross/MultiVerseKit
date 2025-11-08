@@ -355,6 +355,22 @@ namespace RS.Widgets.Controls
             DependencyProperty.Register("NotActiveCaptionBackground", typeof(Brush), typeof(RSWindowBase), new PropertyMetadata(default));
 
 
+
+
+        public Thickness WinBtnCommandMargin
+        {
+            get { return (Thickness)GetValue(WinBtnCommandMarginProperty); }
+            set { SetValue(WinBtnCommandMarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty WinBtnCommandMarginProperty =
+            DependencyProperty.Register("WinBtnCommandMargin", typeof(Thickness), typeof(RSWindowBase), new PropertyMetadata(new Thickness(0)));
+
+
+
+
+
+
         #region Icon参数设置
 
         public CornerRadius IconCornerRadius

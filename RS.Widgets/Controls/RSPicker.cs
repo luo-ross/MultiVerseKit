@@ -1,8 +1,14 @@
-﻿using RS.Widgets.Models;
+﻿using RS.Commons.Extensions;
+using RS.Widgets.Models;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -114,7 +120,7 @@ namespace RS.Widgets.Controls
             rsPicker.IsCanRefreshItemsList = true;
         }
 
-
+        
 
         [Description("控件描述")]
         public string Description
@@ -137,18 +143,170 @@ namespace RS.Widgets.Controls
         public static readonly DependencyProperty SearchValueProperty =
             DependencyProperty.Register("SearchValue", typeof(object), typeof(RSPicker), new PropertyMetadata(null, OnSearchValuePropertyChanged));
 
+
         private static void OnSearchValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var rsPicker = d as RSPicker;
-            var firstOrDefault = rsPicker.SourceList.FirstOrDefault();
-            var elementType = firstOrDefault.GetType();
-            object convertedValue = Convert.ChangeType(e.NewValue, elementType);
-            var selectItem = rsPicker.SourceList.FirstOrDefault(t => t.Equals(convertedValue));
-            if (selectItem != null)
+            if (rsPicker?.SourceList == null || !rsPicker.SourceList.Any())
             {
-                rsPicker.SelectedItem = selectItem;
+                return;
             }
+
+            var firstItem = rsPicker.SourceList.First();
+            var elementType = firstItem.GetType();
+            var searchPropertyName = rsPicker.SearchPropertyName;
+            object? convertedValue = null;
+            object? selectedItem = null;
+            if (elementType.IsValueType || elementType == typeof(string))
+            {
+                if (e.NewValue == null)
+                {
+                    rsPicker.SelectedItem = null;
+                    return;
+                }
+
+                try
+                {
+                    var targetType = elementType.IsNullableType()
+                        ? Nullable.GetUnderlyingType(elementType)
+                        : elementType;
+
+                    convertedValue = ChangeToTargetType(e.NewValue, targetType);
+                    var keyword = convertedValue?.ToString() ?? string.Empty;
+
+                    selectedItem = rsPicker.SourceList.FirstOrDefault(item =>
+                       item != null &&
+                       item.ToString().IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    rsPicker.SelectedItem = selectedItem;
+                }
+                catch (Exception ex) when (ex is InvalidCastException || ex is FormatException)
+                {
+                    rsPicker.SelectedItem = null;
+                }
+
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(searchPropertyName) || e.NewValue == null)
+            {
+                rsPicker.SelectedItem = null;
+                return;
+            }
+
+            var propertyInfo = elementType.GetProperty(searchPropertyName, BindingFlags.Public | BindingFlags.Instance);
+            if (propertyInfo == null)
+            {
+                return;
+            }
+
+
+            var propertyType = propertyInfo.PropertyType;
+            var targetPropertyType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+            convertedValue = ChangeToTargetType(e.NewValue, targetPropertyType);
+
+            var parameter = System.Linq.Expressions.Expression.Parameter(elementType, "t");
+            var propertyAccess = System.Linq.Expressions.Expression.Property(parameter, propertyInfo);
+
+            System.Linq.Expressions.Expression predicateBody;
+            System.Linq.Expressions.Expression constantExpression = null;
+
+            if (propertyType == typeof(string))
+            {
+                var toStringMethod = propertyAccess.Type.GetMethod("ToString", Type.EmptyTypes)
+                 ?? typeof(object).GetMethod("ToString", Type.EmptyTypes)!;
+
+                var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
+                var keyword = convertedValue?.ToString() ?? string.Empty;
+                var keywordExpression = System.Linq.Expressions.Expression.Constant(keyword, typeof(string));
+
+                System.Linq.Expressions.Expression propertyString = propertyAccess;
+
+                if (propertyString.Type != typeof(string))
+                {
+                    propertyString = System.Linq.Expressions.Expression.Call(propertyAccess, toStringMethod);
+                }
+
+                predicateBody = System.Linq.Expressions.Expression.Call(propertyString, containsMethod, keywordExpression);
+            }
+            else
+            {
+                if (convertedValue == null)
+                {
+                    if (!propertyType.IsValueType || propertyType.IsNullableType())
+                    {
+                        constantExpression = System.Linq.Expressions.Expression.Constant(null, propertyType);
+                    }
+                    else
+                    {
+                        rsPicker.SelectedItem = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    constantExpression = System.Linq.Expressions.Expression.Constant(convertedValue, targetPropertyType);
+                    if (propertyType != targetPropertyType)
+                    {
+                        constantExpression = System.Linq.Expressions.Expression.Convert(constantExpression, propertyType);
+                    }
+                }
+
+                predicateBody = System.Linq.Expressions.Expression.Equal(propertyAccess, constantExpression);
+            }
+
+            var lambdaType = typeof(Func<,>).MakeGenericType(elementType, typeof(bool));
+            var lambda = System.Linq.Expressions.Expression.Lambda(lambdaType, predicateBody, parameter);
+
+            var queryable = rsPicker.SourceList.AsQueryable();
+            var castMethod = typeof(Queryable).GetMethod("Cast")!.MakeGenericMethod(elementType);
+            var castedQueryable = castMethod.Invoke(null, new object[] { queryable });
+
+            var firstOrDefaultMethod = typeof(Queryable)
+                .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .Where(m => m.Name == "FirstOrDefault" && m.IsGenericMethodDefinition)
+                .Select(m => new { Method = m, Params = m.GetParameters() })
+                .Where(x => x.Params.Length == 2)
+                .Where(x =>
+                {
+                    var secondParamType = x.Params[1].ParameterType;
+                    return secondParamType.IsGenericType
+                           && secondParamType.GetGenericTypeDefinition() == typeof(Expression<>);
+                })
+                .Select(x => x.Method)
+                .First()
+                .MakeGenericMethod(elementType);
+
+            selectedItem = firstOrDefaultMethod.Invoke(null, new object[] { castedQueryable, lambda });
+            rsPicker.SelectedItem = selectedItem;
         }
+
+        private static object ChangeToTargetType(object value, Type targetType)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            if (targetType.IsEnum)
+            {
+                return Enum.Parse(targetType, value.ToString()!, ignoreCase: true);
+            }
+
+            return Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+        }
+
+        [Description("搜索属性名称")]
+        public string SearchPropertyName
+        {
+            get { return (string)GetValue(SearchPropertyNameProperty); }
+            set { SetValue(SearchPropertyNameProperty, value); }
+        }
+        public static readonly DependencyProperty SearchPropertyNameProperty =
+            DependencyProperty.Register("SearchPropertyName", typeof(string), typeof(RSPicker), new PropertyMetadata(null));
+
+
+
 
         [Description("选择项背景色")]
         public Brush SelectedBackground
@@ -159,6 +317,18 @@ namespace RS.Widgets.Controls
 
         public static readonly DependencyProperty SelectedBackgroundProperty =
             DependencyProperty.Register("SelectedBackground", typeof(Brush), typeof(RSPicker), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF1E90FF"))));
+
+
+        [Description("选择项背字体颜色")]
+        public Brush SelectedForground
+        {
+            get { return (Brush)GetValue(SelectedForgroundProperty); }
+            set { SetValue(SelectedForgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedForgroundProperty =
+            DependencyProperty.Register("SelectedForground", typeof(Brush), typeof(RSPicker), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"))));
+
 
 
         [Description("选择项")]
@@ -228,7 +398,7 @@ namespace RS.Widgets.Controls
             //    //RaiseScrollEvent(ScrollEventType.SmallDecrement);
             //}
 
-          
+
         }
 
         //public void SmallIncrement()
@@ -247,10 +417,17 @@ namespace RS.Widgets.Controls
         /// </summary>
         private void RefreshItemsList()
         {
-            if (this.PART_Canvas == null || this.SelectedItem == null)
+            if (this.PART_Canvas == null)
             {
                 return;
             }
+
+            //if (this.SelectedItem == null
+            //    && this.SourceList != null
+            //    && this.SourceList.Count > 0)
+            //{
+            //    this.SelectedItem = this.SourceList[0];
+            //}
 
 
             //获取窗口平移数据
@@ -289,7 +466,7 @@ namespace RS.Widgets.Controls
                     this.ItemsList.Add(itemTemplate);
                 }
             }
-            this.Width = Math.Max(this.MinWidth, this.CalcuWidth);
+            //this.Width = Math.Max(this.MinWidth, this.CalcuWidth);
             this.AddItemsIntoCanvas();
         }
 
@@ -351,10 +528,19 @@ namespace RS.Widgets.Controls
             }
         }
 
+
         private void UpdateItemsPosition(FrameworkElement frameworkElement, double canvasTop)
         {
-            frameworkElement.Width = this.Width;
-            Canvas.SetLeft(frameworkElement, 0);
+
+            double canvasWidth = this.ActualWidth;
+            double left = 0;
+            if (this.HorizontalContentAlignment == HorizontalAlignment.Center)
+            {
+                double elementWidth = frameworkElement.Width > 0 ? frameworkElement.Width : frameworkElement.ActualWidth;
+                left = Math.Max(0, (canvasWidth - elementWidth) / 2);
+            }
+
+            Canvas.SetLeft(frameworkElement, left);
             Canvas.SetTop(frameworkElement, canvasTop);
         }
 
@@ -447,7 +633,7 @@ namespace RS.Widgets.Controls
             ContentPresenter presenter = new ContentPresenter
             {
                 Content = item,
-                ContentTemplate = this.ItemTemplate
+                ContentTemplate = this.ItemTemplate,
             };
             presenter.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             presenter.Arrange(new Rect(presenter.DesiredSize));

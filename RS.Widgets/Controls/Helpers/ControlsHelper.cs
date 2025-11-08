@@ -252,24 +252,22 @@ namespace RS.Widgets.Controls
 
 
       
-        public static readonly DependencyProperty BlendRatioProperty =
+        public static readonly DependencyProperty MouseOverColorProperty =
             DependencyProperty.RegisterAttached(
-                "BlendRatio",
+                "MouseOverColor",
                 typeof(double),
                 typeof(ControlsHelper),
-                new PropertyMetadata(0D));
+                new PropertyMetadata(null));
 
-        public static void SetBlendRatio(UIElement element, double value)
+        public static void SetMouseOverColor(UIElement element, double value)
         {
-            element.SetValue(BlendRatioProperty, value);
+            element.SetValue(MouseOverColorProperty, value);
         }
 
-        public static double GetBlendRatio(UIElement element)
+        public static double GetMouseOverColor(UIElement element)
         {
-            return (double)element.GetValue(BlendRatioProperty);
+            return (double)element.GetValue(MouseOverColorProperty);
         }
-
-
 
 
     }
