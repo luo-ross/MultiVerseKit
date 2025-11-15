@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using RS.Widgets.Interfaces;
 using RS.Widgets.Models;
+using RS.WPFClient.Enums;
 using RS.WPFClient.Models;
 using System;
 using System.Collections.Generic;
@@ -20,43 +21,55 @@ namespace RS.WPFClient.ViewModels
         #endregion
 
         #region 命令
- 
+
         public ICommand HideSearchCommand { get; }
 
-        public ICommand TxtSearchGotFocusCommand { get; }
+        public ICommand SearchViewPreviewMouseLeftButtonUpCommand { get; }
+
         #endregion
         public SearchViewModel()
         {
             this.HideSearchCommand = new RelayCommand(HideSearch);
-            this.TxtSearchGotFocusCommand = new RelayCommand(TxtSearchGotFocus);
+            this.SearchViewPreviewMouseLeftButtonUpCommand = new RelayCommand(SearchViewPreviewMouseLeftButtonUp);
+            this.InitSearchTypeModelList();
+            this.InitDateFilterList();
         }
+       
 
-        private void TxtSearchGotFocus()
+        private void SearchViewPreviewMouseLeftButtonUp()
         {
-            this.IsSearchChecked = true;
+            this.IsShowSearch = true;
         }
 
         private void HideSearch()
         {
-            if (IsSearchTypeChecked)
+            //用户点击搜索类型或者高级搜索时不关闭
+            if (this.IsSearchTypeChecked || this.IsAdvancedSearchChecked)
             {
                 return;
             }
-            IsSearchChecked = false;
+
+            //搜索内容不为空 则不关闭
+            if (!string.IsNullOrWhiteSpace(this.SearchContent))
+            {
+                return;
+            }
+
+            IsShowSearch = false;
         }
 
-      
 
-        private bool isSearchChecked;
+
+        private bool isShowSearch;
         /// <summary>
         /// 是否选择搜索
         /// </summary>
-        public bool IsSearchChecked
+        public bool IsShowSearch
         {
-            get { return isSearchChecked; }
+            get { return isShowSearch; }
             set
             {
-                this.SetProperty(ref isSearchChecked, value);
+                this.SetProperty(ref isShowSearch, value);
             }
         }
 
@@ -75,6 +88,20 @@ namespace RS.WPFClient.ViewModels
         }
 
 
+        private bool isAdvancedSearchChecked;
+        /// <summary>
+        /// 高级搜索是否选中
+        /// </summary>
+        public bool IsAdvancedSearchChecked
+        {
+            get { return isAdvancedSearchChecked; }
+            set
+            {
+                this.SetProperty(ref isAdvancedSearchChecked, value);
+            }
+        }
+
+
         private string searchContent;
         /// <summary>
         /// 搜索内容
@@ -88,7 +115,27 @@ namespace RS.WPFClient.ViewModels
             }
         }
 
+        #region 搜索类型
 
+        private void InitSearchTypeModelList()
+        {
+            var searchTypeList = Enum.GetValues(typeof(SearchType))
+             .Cast<SearchType>()
+             .Select(t =>
+             {
+                 var searchTypeModel = new SearchTypeModel()
+                 {
+                     SearchType = t
+                 };
+                 if (searchTypeModel.SearchType == SearchType.Email)
+                 {
+                     searchTypeModel.IsSelect = true;
+                     this.SearchTypeModelSelect = searchTypeModel;
+                 }
+                 return searchTypeModel;
+             });
+            this.SearchTypeModelList = new ObservableCollection<SearchTypeModel>(searchTypeList);
+        }
 
 
         private ObservableCollection<SearchTypeModel> searchTypeModelList;
@@ -103,6 +150,73 @@ namespace RS.WPFClient.ViewModels
                 this.SetProperty(ref searchTypeModelList, value);
             }
         }
+
+        private SearchTypeModel searchTypeModelSelect;
+        /// <summary>
+        /// 搜索类型
+        /// </summary>
+        public SearchTypeModel SearchTypeModelSelect
+        {
+            get { return searchTypeModelSelect; }
+            set
+            {
+                this.SetProperty(ref searchTypeModelSelect, value);
+            }
+        }
+        #endregion
+
+        #region 日期
+
+        private void InitDateFilterList()
+        {
+            var dateFilterTypeList = Enum.GetValues(typeof(DateFilterType))
+              .Cast<DateFilterType>()
+              .Select(t =>
+              {
+                  var dateFilterModel = new DateFilterModel()
+                  {
+                      DateFilterType = t
+                  };
+                  if (dateFilterModel.DateFilterType == DateFilterType.Any)
+                  {
+                      dateFilterModel.IsSelect = true;
+                      this.DateFilterModelSelect = dateFilterModel;
+                  }
+                  return dateFilterModel;
+              });
+            this.DateFilterList = new ObservableCollection<DateFilterModel>(dateFilterTypeList);
+        }
+
+        private ObservableCollection<DateFilterModel> dateFilterList;
+        /// <summary>
+        /// 日期
+        /// </summary>
+        public ObservableCollection<DateFilterModel> DateFilterList
+        {
+            get
+            {
+                return dateFilterList;
+            }
+            set
+            {
+                this.SetProperty(ref dateFilterList, value);
+            }
+        }
+
+
+        private DateFilterModel dateFilterModelSelect;
+        /// <summary>
+        /// 日期搜索类型
+        /// </summary>
+        public DateFilterModel DateFilterModelSelect
+        {
+            get { return dateFilterModelSelect; }
+            set
+            {
+                this.SetProperty(ref dateFilterModelSelect, value);
+            }
+        }
+        #endregion
 
     }
 }

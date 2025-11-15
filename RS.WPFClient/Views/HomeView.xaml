@@ -80,10 +80,19 @@
                     </Grid.ColumnDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="*"
-                                MinWidth="230"
-                                MaxWidth="500" />
+                            <ColumnDefinition Width="*">
+                                <ColumnDefinition.Style>
+                                    <Style TargetType="{x:Type ColumnDefinition}">
+                                        <Setter Property="MinWidth" Value="230" />
+                                        <Setter Property="MaxWidth" Value="500" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SearchViewModel.IsShowSearch}" Value="True">
+                                                <Setter Property="MaxWidth" Value="800" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ColumnDefinition.Style>
+                            </ColumnDefinition>
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
@@ -91,13 +100,12 @@
                     </Grid>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal">
-                        <ToggleButton
-                            x:Name="PART_TogBtnUserInfo"
+                        <rs:RSDropdown
                             Height="40"
                             Padding="5,0,5,0"
                             VerticalAlignment="Stretch">
-                            <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource RSApp.Styles.ButtonBase}" TargetType="{x:Type ToggleButton}">
+                            <rs:RSDropdown.Style>
+                                <Style TargetType="{x:Type rs:RSDropdown}">
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="#DBE3ED" />
@@ -110,27 +118,37 @@
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
-                            </ToggleButton.Style>
-                            <StackPanel Orientation="Horizontal">
-                                <Border
-                                    Width="32"
-                                    Height="32"
-                                    CornerRadius="50">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="/Assets/login-left.jpg" />
-                                    </Border.Background>
-                                </Border>
+                            </rs:RSDropdown.Style>
+                            <rs:RSDropdown.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border
+                                        Width="32"
+                                        Height="32"
+                                        CornerRadius="50">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="/Assets/login-left.jpg" />
+                                        </Border.Background>
+                                    </Border>
 
-                                <TextBlock
-                                    Margin="3,0,0,0"
-                                    Foreground="#707070"
-                                    Text="">
-                                    <Run FontSize="14" Text="行云游者" />
-                                    <Run FontSize="12" Text="•" />
-                                    <Run FontSize="12" Text="1845960295@qq.com" />
-                                </TextBlock>
-                            </StackPanel>
-                        </ToggleButton>
+                                    <TextBlock
+                                        Margin="3,0,0,0"
+                                        Foreground="#707070"
+                                        Text="">
+                                        <Run FontSize="14" Text="行云游者" />
+                                        <Run FontSize="12" Text="•" />
+                                        <Run FontSize="12" Text="1845960295@qq.com" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </rs:RSDropdown.Content>
+                            <rs:RSDropdown.DropdownContent>
+                                <Grid>
+                                    <TextBlock Margin="5,0,0,0" Text="24234" />
+                                </Grid>
+                            </rs:RSDropdown.DropdownContent>
+                        </rs:RSDropdown>
+                        
+                        
+
 
                         <Button
                             Height="40"
@@ -157,31 +175,7 @@
                         </Button>
                     </StackPanel>
 
-                    <rs:RSPopup
-                        x:Name="PART_UserPopup"
-                        AllowsTransparency="True"
-                        Focusable="False"
-                        HorizontalOffset="-3"
-                        IsOpen="{Binding ElementName=PART_TogBtnUserInfo, Path=IsChecked, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        Placement="Bottom"
-                        PlacementTarget="{Binding ElementName=PART_TogBtnUserInfo}"
-                        PopupAnimation="None"
-                        SnapsToDevicePixels="True"
-                        StaysOpen="False"
-                        VerticalOffset="-3">
-                        <Border Margin="15" Effect="{StaticResource RSApp.Styles.DefaultEffect}">
-                            <Border
-                                x:Name="DropDownBorder"
-                                MinWidth="{Binding ElementName=PART_TogBtnUserInfo, Path=ActualWidth}"
-                                MinHeight="200"
-                                Margin="5"
-                                Background="#FFF"
-                                CornerRadius="5">
-                                <Grid />
-                            </Border>
-                        </Border>
 
-                    </rs:RSPopup>
                 </Grid>
             </Grid>
         </Border>

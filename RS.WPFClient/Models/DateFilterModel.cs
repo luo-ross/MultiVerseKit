@@ -1,41 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RS.WPFClient.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RS.Widgets.Models
+namespace RS.WPFClient.Models
 {
-    public class ComboBoxItemModel<T> : ObservableObject
+    public class DateFilterModel : ObservableObject
     {
-
-        private T key;
+        private DateFilterType dateFilterType;
         /// <summary>
-        /// 键值
+        /// 日期筛选类型
         /// </summary>
-        public T Key
+        public DateFilterType DateFilterType
         {
-            get { return key; }
+            get { return dateFilterType; }
             set
             {
-                this.SetProperty(ref key, value);
+                this.SetProperty(ref dateFilterType, value);
             }
         }
 
-
-        private string keyDes;
-        /// <summary>
-        /// 键值描述
-        /// </summary>
-        public string KeyDes
-        {
-            get { return keyDes; }
-            set
-            {
-                this.SetProperty(ref keyDes, value);
-            }
-        }
 
         private bool isSelect;
         /// <summary>
@@ -49,6 +36,5 @@ namespace RS.Widgets.Models
                 this.SetProperty(ref isSelect, value);
             }
         }
-      
     }
 }

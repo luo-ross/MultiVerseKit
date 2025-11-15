@@ -5,6 +5,7 @@
         <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.ComboBoxItem.xaml" />
         <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.ContextMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.DataGrid.xaml" />
         <ResourceDictionary Source="pack://application:,,,/RS.Widgets;component/Styles/Controls.Effects.xaml" />
@@ -38,6 +39,7 @@
     </Style>
     <Style BasedOn="{StaticResource RSApp.Styles.TextBlockStyle}" TargetType="{x:Type TextBlock}" />
     <Style BasedOn="{StaticResource RSApp.Styles.CheckBoxStyle}" TargetType="{x:Type CheckBox}" />
+    <Style BasedOn="{StaticResource RSApp.Styles.ComboBoxItemStyle}" TargetType="{x:Type ComboBoxItem}" />
     <Style BasedOn="{StaticResource RSApp.Styles.ComboBoxStyle}" TargetType="{x:Type ComboBox}" />
     <Style BasedOn="{StaticResource RSApp.Styles.GroupBoxStyle}" TargetType="{x:Type GroupBox}" />
     <Style BasedOn="{StaticResource RSApp.Styles.ContextMenuStyle}" TargetType="{x:Type ContextMenu}" />

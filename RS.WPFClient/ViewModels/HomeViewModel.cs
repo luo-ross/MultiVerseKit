@@ -34,27 +34,7 @@ namespace RS.WPFClient.ViewModels
 				this.DateTimeNow = DateTime.Now;
 			}, Application.Current.Dispatcher);
 
-			this.SearchViewModel = new SearchViewModel()
-			{
-				SearchTypeModelList = new ObservableCollection<SearchTypeModel>()
-				{
-					new SearchTypeModel(){
-						TypeDes="邮件"
-					},
-					new SearchTypeModel(){
-						TypeDes="文件"
-					},
-					new SearchTypeModel(){
-						TypeDes="发票"
-					},
-					new SearchTypeModel(){
-						TypeDes="通讯录"
-					},
-					new SearchTypeModel(){
-						TypeDes="记事本"
-					},
-				}
-			};
+			
 		}
 
 

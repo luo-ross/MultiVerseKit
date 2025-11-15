@@ -3,6 +3,7 @@ using RS.Win32API.Structs;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 namespace RS.Widgets.Controls
@@ -20,15 +21,32 @@ namespace RS.Widgets.Controls
             this.Closed += RSPopup_Closed;
         }
 
+
+
+
+        public UIElement RelativeElement
+        {
+            get { return (UIElement)GetValue(RelativeElementProperty); }
+            set { SetValue(RelativeElementProperty, value); }
+        }
+
+        public static readonly DependencyProperty RelativeElementProperty =
+            DependencyProperty.Register("RelativeElement", typeof(UIElement), typeof(RSPopup), new PropertyMetadata(null));
+
+
+
         private void RSPopup_Closed(object? sender, EventArgs e)
         {
-            var directlyOver = Mouse.DirectlyOver as UIElement;
-            var placementTarget = this.PlacementTarget;
-            if (directlyOver == placementTarget)
+            if (this.RelativeElement == null)
             {
                 return;
             }
-            if (placementTarget is ToggleButton toggleButton&& toggleButton.IsChecked==true)
+            var directlyOver = Mouse.DirectlyOver as UIElement;
+            if (directlyOver== this.RelativeElement)
+            {
+                return;
+            }
+            if (RelativeElement is ToggleButton toggleButton && toggleButton.IsChecked == true)
             {
                 toggleButton.IsChecked = false;
             }

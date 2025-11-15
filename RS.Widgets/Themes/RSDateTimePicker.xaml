@@ -67,137 +67,125 @@
                                 x:Name="PART_Popup"
                                 Height="380"
                                 AllowsTransparency="True"
-                                HorizontalOffset="-5"
                                 IsOpen="{Binding ElementName=PART_BtnDatePicker, Path=IsChecked}"
                                 Placement="Bottom"
                                 PlacementTarget="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                 SnapsToDevicePixels="True"
                                 VerticalOffset="0">
-                                <Border Margin="15" Effect="{StaticResource RSApp.Styles.DefaultEffect}">
-                                    <Border
-                                        x:Name="DropDownBorder"
-                                        Margin="5"
-                                        Background="#fff"
-                                        CornerRadius="{TemplateBinding CornerRadius}">
-                                        <Border.Clip>
-                                            <MultiBinding Converter="{StaticResource ClipConverter}">
-                                                <Binding ElementName="DropDownBorder" Path="CornerRadius" />
-                                                <Binding ElementName="DropDownBorder" Path="ActualWidth" />
-                                                <Binding ElementName="DropDownBorder" Path="ActualHeight" />
-                                                <Binding ElementName="DropDownBorder" Path="BorderThickness" />
-                                            </MultiBinding>
-                                        </Border.Clip>
+                                <Border
+                                    Margin="15"
+                                    Background="#fff"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Effect="{StaticResource RSApp.Styles.DefaultEffect}">
+                                    <Grid x:Name="PART_PopupHost">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
 
-                                        <Grid x:Name="PART_PopupHost">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*" />
-                                                <RowDefinition Height="auto" />
-                                            </Grid.RowDefinitions>
-                                            <Grid Grid.Row="0">
+                                            <rs:RSPicker
+                                                x:Name="PART_Year"
+                                                Grid.Column="0"
+                                                rs:TextBoxHelper.IsShowClearButton="True"
+                                                rs:TextBoxHelper.Watermark="年"
+                                                BorderThickness="0,0,1,0"
+                                                Description="年"
+                                                IsCanSearch="{TemplateBinding IsCanSearch}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YearList}"
+                                                SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YearSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <rs:RSPicker
+                                                x:Name="PART_Month"
+                                                Grid.Column="1"
+                                                rs:TextBoxHelper.IsShowClearButton="True"
+                                                rs:TextBoxHelper.Watermark="月"
+                                                BorderThickness="0,0,1,0"
+                                                Description="月"
+                                                IsCanSearch="{TemplateBinding IsCanSearch}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MonthList}"
+                                                SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MonthSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <rs:RSPicker
+                                                x:Name="PART_Day"
+                                                Grid.Column="2"
+                                                rs:TextBoxHelper.IsShowClearButton="True"
+                                                rs:TextBoxHelper.Watermark="日"
+                                                BorderThickness="0,0,1,0"
+                                                Description="日"
+                                                IsCanSearch="{TemplateBinding IsCanSearch}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DayList}"
+                                                SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <rs:RSPicker
+                                                x:Name="PART_Hour"
+                                                Grid.Column="3"
+                                                rs:TextBoxHelper.IsShowClearButton="True"
+                                                rs:TextBoxHelper.Watermark="时"
+                                                BorderThickness="0,0,1,0"
+                                                Description="时"
+                                                IsCanSearch="{TemplateBinding IsCanSearch}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HourList}"
+                                                SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HourSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <rs:RSPicker
+                                                x:Name="PART_Minute"
+                                                Grid.Column="4"
+                                                rs:TextBoxHelper.IsShowClearButton="True"
+                                                rs:TextBoxHelper.Watermark="分"
+                                                BorderThickness="0,0,1,0"
+                                                Description="分"
+                                                IsCanSearch="{TemplateBinding IsCanSearch}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinuteList}"
+                                                SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinuteSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <rs:RSPicker
+                                                x:Name="PART_Second"
+                                                Grid.Column="5"
+                                                rs:TextBoxHelper.IsShowClearButton="True"
+                                                rs:TextBoxHelper.Watermark="秒"
+                                                BorderThickness="0,0,1,0"
+                                                Description="秒"
+                                                IsCanSearch="{TemplateBinding IsCanSearch}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SecondList}"
+                                                SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SecondSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </Grid>
+                                        <Border
+                                            Grid.Row="1"
+                                            BorderBrush="#eee"
+                                            BorderThickness="0,1,0,0">
+                                            <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
                                                     <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-
-                                                <rs:RSPicker
-                                                    x:Name="PART_Year"
+                                                <Button
+                                                    x:Name="PART_BtnConfirm"
                                                     Grid.Column="0"
-                                                    rs:TextBoxHelper.IsShowClearButton="True"
-                                                    rs:TextBoxHelper.Watermark="年"
-                                                    BorderThickness="0,0,1,0"
-                                                    Description="年"
-                                                    IsCanSearch="{TemplateBinding IsCanSearch}"
-                                                    ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YearList}"
-                                                    SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YearSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <rs:RSPicker
-                                                    x:Name="PART_Month"
+                                                    Padding="8"
+                                                    rs:ControlsHelper.IconData="{StaticResource RSApp.Icons.CheckMark}"
+                                                    rs:ControlsHelper.IconHeight="12"
+                                                    rs:ControlsHelper.IconWidth="17"
+                                                    Style="{StaticResource RSApp.Styles.IconButtonStyle}" />
+                                                <Button
+                                                    x:Name="PART_BtnCancel"
                                                     Grid.Column="1"
-                                                    rs:TextBoxHelper.IsShowClearButton="True"
-                                                    rs:TextBoxHelper.Watermark="月"
-                                                    BorderThickness="0,0,1,0"
-                                                    Description="月"
-                                                    IsCanSearch="{TemplateBinding IsCanSearch}"
-                                                    ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MonthList}"
-                                                    SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MonthSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <rs:RSPicker
-                                                    x:Name="PART_Day"
-                                                    Grid.Column="2"
-                                                    rs:TextBoxHelper.IsShowClearButton="True"
-                                                    rs:TextBoxHelper.Watermark="日"
-                                                    BorderThickness="0,0,1,0"
-                                                    Description="日"
-                                                    IsCanSearch="{TemplateBinding IsCanSearch}"
-                                                    ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DayList}"
-                                                    SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <rs:RSPicker
-                                                    x:Name="PART_Hour"
-                                                    Grid.Column="3"
-                                                    rs:TextBoxHelper.IsShowClearButton="True"
-                                                    rs:TextBoxHelper.Watermark="时"
-                                                    BorderThickness="0,0,1,0"
-                                                    Description="时"
-                                                    IsCanSearch="{TemplateBinding IsCanSearch}"
-                                                    ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HourList}"
-                                                    SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HourSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <rs:RSPicker
-                                                    x:Name="PART_Minute"
-                                                    Grid.Column="4"
-                                                    rs:TextBoxHelper.IsShowClearButton="True"
-                                                    rs:TextBoxHelper.Watermark="分"
-                                                    BorderThickness="0,0,1,0"
-                                                    Description="分"
-                                                    IsCanSearch="{TemplateBinding IsCanSearch}"
-                                                    ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinuteList}"
-                                                    SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinuteSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <rs:RSPicker
-                                                    x:Name="PART_Second"
-                                                    Grid.Column="5"
-                                                    rs:TextBoxHelper.IsShowClearButton="True"
-                                                    rs:TextBoxHelper.Watermark="秒"
-                                                    BorderThickness="0,0,1,0"
-                                                    Description="秒"
-                                                    IsCanSearch="{TemplateBinding IsCanSearch}"
-                                                    ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SecondList}"
-                                                    SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SecondSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    Padding="8"
+                                                    rs:ControlsHelper.IconData="{StaticResource RSApp.Icons.Wrong}"
+                                                    rs:ControlsHelper.IconHeight="13"
+                                                    rs:ControlsHelper.IconWidth="13"
+                                                    Style="{StaticResource RSApp.Styles.IconButtonStyle}" />
                                             </Grid>
-                                            <Border
-                                                Grid.Row="1"
-                                                BorderBrush="#eee"
-                                                BorderThickness="0,1,0,0">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Button
-                                                        x:Name="PART_BtnConfirm"
-                                                        Grid.Column="0"
-                                                        Padding="8"
-                                                        rs:ControlsHelper.IconData="{StaticResource RSApp.Icons.CheckMark}"
-                                                        rs:ControlsHelper.IconHeight="12"
-                                                        rs:ControlsHelper.IconWidth="17"
-                                                        Style="{StaticResource RSApp.Styles.IconButtonStyle}" />
-                                                    <Button
-                                                        x:Name="PART_BtnCancel"
-                                                        Grid.Column="1"
-                                                        Padding="8"
-                                                        rs:ControlsHelper.IconData="{StaticResource RSApp.Icons.Wrong}"
-                                                        rs:ControlsHelper.IconHeight="13"
-                                                        rs:ControlsHelper.IconWidth="13"
-                                                        Style="{StaticResource RSApp.Styles.IconButtonStyle}" />
-                                                </Grid>
-                                            </Border>
-                                        </Grid>
-                                    </Border>
+                                        </Border>
+                                    </Grid>
                                 </Border>
                             </rs:RSPopup>
                         </Grid>

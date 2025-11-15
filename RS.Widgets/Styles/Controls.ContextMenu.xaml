@@ -28,6 +28,7 @@
                     <Border
                         x:Name="PART_Border"
                         Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}">

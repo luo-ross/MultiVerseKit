@@ -120,45 +120,36 @@
                                             SnapsToDevicePixels="True"
                                             StaysOpen="False"
                                             VerticalOffset="3">
-                                            <Border Margin="15" Effect="{StaticResource RSApp.Styles.DefaultEffect}">
-                                                <Border
-                                                    x:Name="DropDownBorder"
-                                                    Width="200"
-                                                    Background="#FFF"
-                                                    CornerRadius="3">
-                                                    <Border.Clip>
-                                                        <MultiBinding Converter="{StaticResource ClipConverter}">
-                                                            <Binding ElementName="DropDownBorder" Path="CornerRadius" />
-                                                            <Binding ElementName="DropDownBorder" Path="ActualWidth" />
-                                                            <Binding ElementName="DropDownBorder" Path="ActualHeight" />
-                                                            <Binding ElementName="DropDownBorder" Path="BorderThickness" />
-                                                        </MultiBinding>
-                                                    </Border.Clip>
-                                                    <StackPanel x:Name="DropDown">
-                                                        <MenuItem
-                                                            x:Name="PART_MenuItem_WindowFloatingCommand"
-                                                            Command="{TemplateBinding WindowFloatingCommand}"
-                                                            CommandParameter="{Binding ElementName=PART_Popup}"
-                                                            Header="浮动" />
-                                                        <MenuItem
-                                                            Command="{TemplateBinding WindowDockingCommand}"
-                                                            CommandParameter="{Binding ElementName=PART_Popup}"
-                                                            Header="停靠" />
-                                                        <MenuItem
-                                                            Command="{TemplateBinding WindowTabDockingCommand}"
-                                                            CommandParameter="{Binding ElementName=PART_Popup}"
-                                                            Header="作为选项式文档停靠" />
-                                                        <MenuItem
-                                                            x:Name="PART_MenuItem_WindowAutoHiddenCommand"
-                                                            Command="{TemplateBinding WindowAutoHiddenCommand}"
-                                                            CommandParameter="{Binding ElementName=PART_Popup}"
-                                                            Header="自动隐藏" />
-                                                        <MenuItem
-                                                            Command="{TemplateBinding CloseWindowCommand}"
-                                                            CommandParameter="{Binding ElementName=PART_Popup}"
-                                                            Header="关闭" />
-                                                    </StackPanel>
-                                                </Border>
+                                            <Border
+                                                Width="200"
+                                                Margin="15"
+                                                Background="#FFF"
+                                                CornerRadius="3"
+                                                Effect="{StaticResource RSApp.Styles.DefaultEffect}">
+                                                <StackPanel x:Name="DropDown">
+                                                    <MenuItem
+                                                        x:Name="PART_MenuItem_WindowFloatingCommand"
+                                                        Command="{TemplateBinding WindowFloatingCommand}"
+                                                        CommandParameter="{Binding ElementName=PART_Popup}"
+                                                        Header="浮动" />
+                                                    <MenuItem
+                                                        Command="{TemplateBinding WindowDockingCommand}"
+                                                        CommandParameter="{Binding ElementName=PART_Popup}"
+                                                        Header="停靠" />
+                                                    <MenuItem
+                                                        Command="{TemplateBinding WindowTabDockingCommand}"
+                                                        CommandParameter="{Binding ElementName=PART_Popup}"
+                                                        Header="作为选项式文档停靠" />
+                                                    <MenuItem
+                                                        x:Name="PART_MenuItem_WindowAutoHiddenCommand"
+                                                        Command="{TemplateBinding WindowAutoHiddenCommand}"
+                                                        CommandParameter="{Binding ElementName=PART_Popup}"
+                                                        Header="自动隐藏" />
+                                                    <MenuItem
+                                                        Command="{TemplateBinding CloseWindowCommand}"
+                                                        CommandParameter="{Binding ElementName=PART_Popup}"
+                                                        Header="关闭" />
+                                                </StackPanel>
                                             </Border>
                                         </Popup>
 

@@ -152,6 +152,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}"
             SnapsToDevicePixels="true">
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -212,7 +213,6 @@
                                 </MultiBinding>
                             </Border.Clip>
                             <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
-
                                 <Grid RenderOptions.ClearTypeHint="Enabled">
                                     <ItemsPresenter
                                         x:Name="ItemsPresenter"
@@ -257,6 +257,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}"
             SnapsToDevicePixels="true">
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -325,6 +326,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}"
             SnapsToDevicePixels="true">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -448,6 +450,7 @@
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding rs:ControlsHelper.CornerRadius}"
             SnapsToDevicePixels="true">
             <Grid>
                 <Grid.ColumnDefinitions>

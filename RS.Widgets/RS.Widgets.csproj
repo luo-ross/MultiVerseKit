@@ -21,6 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Controls\RSPopup.cs~RF86d15d.TMP" />
 	  <None Remove="PixelShaders\BrightnessContrastEffect.ps" />
 	</ItemGroup>
 
